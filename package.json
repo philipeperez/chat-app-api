@@ -6,8 +6,6 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
-    "postinstall": "npm run prestart:prod",
-    "prestart:prod": "rimraf dist && npm run build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
