@@ -18,35 +18,34 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   private users: User[] = [];
 
   afterInit(server: any): any {
-    this.logger.log('Initialized');
+    this.logger.log('InitializedasdADSadADsd');
   }
 
   handleConnection(client: Socket, ...args: any[]): any {
-    // const user: string = client.request._query.user;
     const user: User = {
       name: client.request._query.user,
       id: client.id,
     };
     const msg: Message = {
-      time: new Date().getTime(),
+      time: Date.now(),
       user,
       txt: 'Connected'
     };
     this.users.push(user);
-    this.logger.log(`Client connected: ${client.id}`);
+    this.logger.log(`Client connected: {name: ${user.name}, id: ${client.id}}`);
     this.wss.emit('onlineUserlistUpdated', this.users);
     this.wss.emit('userConnected', msg);
   }
 
   handleDisconnect(client: Socket): any {
-    const user = this.users.find(user => user.id === client.id);
+    const user: User = this.users.find(user => user.id === client.id);
     this.users = this.users.filter(user => user.id !== client.id);
-    this.logger.log(`Client disconnected: ${client.id}`);
+    this.logger.log(`Client disconnected: {name: ${user.name}, id:${client.id}}`);
     this.wss.emit('onlineUserlistUpdated', this.users);
     const msg: Message = {
       txt: 'Disconnected',
       user,
-      time: new Date().getTime()
+      time: Date.now()
     };
     this.wss.emit('userDisconnected', msg);
   }
@@ -54,12 +53,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage('msgToServer')
   handleMessage(@ConnectedSocket() client: Socket, @MessageBody() text: string): void {
     const message: Message = {
-      time: new Date().getTime(),
+      time: Date.now(),
       txt: text,
       user: this.getUserById(client.id)
     };
     this.wss.emit('msgToClient', message);
-    // return {event: 'msgToClient', data: message};
   }
 
   private getUserById(id: string): User {
