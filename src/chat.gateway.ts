@@ -18,7 +18,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   private users: User[] = [];
 
   afterInit(server: any): any {
-    this.logger.log('InitializedasdADSadADsd');
+    this.logger.log('Initialized');
   }
 
   handleConnection(client: Socket, ...args: any[]): any {
